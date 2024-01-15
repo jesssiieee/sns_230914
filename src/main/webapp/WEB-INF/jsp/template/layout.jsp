@@ -19,12 +19,12 @@
 		<div id="wrap">
 		
 			<%-- header --%>
-			<header class="bg-success">
+			<header class="bg-info">
 				<jsp:include page="../include/header.jsp"></jsp:include>
 			</header>
 			
 			<%-- section --%>
-			<section class="contents bg-warning">
+			<section class="contents">
 				<jsp:include page="../${viewlist}.jsp"></jsp:include>
 			</section>
 		

@@ -9,7 +9,7 @@
 	
 	<div class="d-flex">
 		<div class="mr-5">
-			<span>marobiana님 안녕하세요!</span>
+			<span>${userName }님 안녕하세요!</span>
 		</div>
 		<div class="mr-2">
 			<a href="/user/sign-out">로그아웃</a>
