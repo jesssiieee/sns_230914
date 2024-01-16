@@ -15,3 +15,17 @@ header {height:80px; background-color:#ededed;}
 
 .comment-input {width:565px;}
 
+.textareacontent{border:none;}
+
+.textareadiv{
+	width: 600px;
+	height: 170px;
+	border: 1px solid black;
+}
+
+.contents-post{
+	width: 600px;
+	height: 1000px;
+	border: 1px solid black;
+}
+
