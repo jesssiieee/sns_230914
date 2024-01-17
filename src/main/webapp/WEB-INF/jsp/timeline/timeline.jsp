@@ -11,7 +11,7 @@
 			
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
-					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+					<a href="#" id="fileUploadBtn"><img width="35" src="/static/img/picture-icon.png"></a>
 				</div>
 				<button id="writeBtn" class="btn btn-info">게시</button>
 			</div>
@@ -24,18 +24,18 @@
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
 				<c:forEach items="${postList }" var="post">
-				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">${post.userId }</span>
+					<div class="p-2 d-flex justify-content-between">
+						<span class="font-weight-bold">${post.userId }</span>
+						
+						<a href="#" class="more-btn">
+							<img src="/static/img/more-icon.png" width="30">
+						</a>
+					</div>	
 					
-					<a href="#" class="more-btn">
-						<img src="/static/img/more-icon.png" width="30">
-					</a>
-				</div>	
-				
-				<%-- 카드 이미지 --%>
-				<div class="card-img">
-					<img src="${post.imagePath }" class="w-100" alt="본문 이미지">
-				</div>
+					<%-- 카드 이미지 --%>
+					<div class="card-img">
+						<img src="${post.imagePath }" class="w-100" alt="본문 이미지">
+					</div>
 				</c:forEach>
 				
 				<%-- 좋아요 --%>
@@ -49,10 +49,10 @@
 				
 				<%-- 글 --%>
 				<c:forEach items="${postList }" var="post">
-				<div class="card-post m-3">
-					<span class="font-weight-bold">${post.userId }</span>
-					<span>${post.content }</span>
-				</div>
+					<div class="card-post m-3">
+						<span class="font-weight-bold">${post.userId }</span>
+						<span>${post.content }</span>
+					</div>
 				</c:forEach>
 				
 				<%-- 댓글 제목 --%>
@@ -69,7 +69,7 @@
 						
 						<%-- 댓글 삭제 버튼 --%>
 						<a href="#" class="comment-del-btn">
-							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+							<img src="/static/img/x-icon.png" width="10" height="10">
 						</a>
 					</div>
 					

@@ -14,8 +14,8 @@ public class PostBO {
 	@Autowired
 	private PostRepository postRepository;
 	
-	public List<PostEntity> getPostListByUserId(int userId) {
-		return postRepository.findByUserId(userId);
+	public List<PostEntity> getPostList() {
+		return postRepository.findAllByOrderByIdDesc();
 	}
 	
 }

@@ -27,11 +27,11 @@ public class TimelineController {
 		// 로그인 여부 확인
 		Integer userId = (Integer) session.getAttribute("userId");
 //		if (userId == null) {
-//			return "redirect:/user/sign-in-view";
+//			return "redirect:/timeline/timeline-view";
 //		}
 		
 		// DB 목록 조회
-		List<PostEntity> postList = postBO.getPostListByUserId(userId);
+		List<PostEntity> postList = postBO.getPostList();
 		
 		model.addAttribute("postList", postList);
 		model.addAttribute("viewlist", "timeline/timeline");
