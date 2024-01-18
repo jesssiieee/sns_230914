@@ -7,17 +7,18 @@
 		<%-- 글쓰기 영역(로그인 된 사람만 보이게) --%>
 		<c:if test="${not empty userId}">
 		<div class="write-box border rounded m-3">
-			<textarea id="writeTextArea" name="content" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
+			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
 			
 			<div class="d-flex justify-content-between">
 				<div class="file-upload d-flex">
-					<%-- file 태그를 숨겨두고, 이미지를 클릭하면, file 태그를 클릭한 것과 같은 효과 --%>
-					<input type="file" id="file" name="file" accept=".jpg, .jpeg, .gif, .png" class="d-none">
+					<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것과 같은 효과 --%>
+					<input type="file" id="file" accept=".jpg, .jpeg, .gif, .png" class="d-none">
 				
 					<%-- 이미지에 마우스를 올리면 마우스 커서가 변하도록 적용 --%>
-					<a href="#" id="fileUploadBtn"><img width="35" src="/static/img/picture-icon.png"></a>
+					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+					
 					<%-- 업로드 된 임시 이미지 파일 이름 나타내는 곳 --%>
-					<div id="fileName" class="ml-2 mt-2"></div>
+					<div id="fileName" class="ml-2"></div>
 				</div>
 				<button id="writeBtn" class="btn btn-info">게시</button>
 			</div>
@@ -26,40 +27,37 @@
 		
 		<%-- 타임라인 영역 --%>
 		<div class="timeline-box my-5">
+			<c:forEach items="${postList}" var="post">
 			<%-- 카드1 --%>
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
-				<c:forEach items="${postList }" var="post">
-					<div class="p-2 d-flex justify-content-between">
-						<span class="font-weight-bold">${post.userId }</span>
-						
-						<a href="#" class="more-btn">
-							<img src="/static/img/more-icon.png" width="30">
-						</a>
-					</div>	
+				<div class="p-2 d-flex justify-content-between">
+					<span class="font-weight-bold">${post.userId}</span>
 					
-					<%-- 카드 이미지 --%>
-					<div class="card-img">
-						<img src="${post.imagePath }" class="w-100" alt="본문 이미지">
-					</div>
-				</c:forEach>
+					<a href="#" class="more-btn">
+						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
+					</a>
+				</div>	
+				
+				<%-- 카드 이미지 --%>
+				<div class="card-img">
+					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+				</div>
 				
 				<%-- 좋아요 --%>
 				<div class="card-like m-3">
 					<a href="#" class="like-btn">
-						<img src="/static/img/heart-icon.png" width="18" height="18" alt="empty heart">
+						<img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
 					</a>
 					
 					좋아요 13개
 				</div>
 				
 				<%-- 글 --%>
-				<c:forEach items="${postList }" var="post">
-					<div class="card-post m-3">
-						<span class="font-weight-bold">${post.userId }</span>
-						<span>${post.content }</span>
-					</div>
-				</c:forEach>
+				<div class="card-post m-3">
+					<span class="font-weight-bold">${post.userId}</span>
+					<span>${post.content}</span>
+				</div>
 				
 				<%-- 댓글 제목 --%>
 				<div class="card-comment-desc border-bottom">
@@ -75,17 +73,18 @@
 						
 						<%-- 댓글 삭제 버튼 --%>
 						<a href="#" class="comment-del-btn">
-							<img src="/static/img/x-icon.png" width="10" height="10">
+							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 						</a>
 					</div>
 					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" class="comment-btn btn btn-light">게시</button>
+						<button type="button" id="commentBtn" class="comment-btn btn btn-light">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
+			</c:forEach>
 		</div> <%--// 타임라인 영역 끝  --%>
 	</div> <%--// contents-box 끝  --%>
 </div>
@@ -135,15 +134,19 @@
 			// 글 내용
 			// 이미지
 			let content = $("#writeTextArea").val();
-			let imagePath = $("#file").val();
+			console.log(content);
 			
-			if (!imagePath) {
+			let file = $("#file").val();
+			console.log(file);
+			
+			if (!file) {
 				alert("사진을 선택해주세요.");
 			}
+			
 			// 이미지 확장자 체크
-			if (imagePath) {
+			if (file) {
 				// alert("파일 존재");
-				let extension = imagePath.split(".").pop().toLowerCase();
+				let extension = file.split(".").pop().toLowerCase();
 				// alert(extension);
 				
 				if ($.inArray(extension, ['jpg', 'png', 'gif', 'jpeg']) == -1) {
@@ -174,7 +177,9 @@
 				, success:function(data) {
 					if(data.code == 200) {
 						alert("글을 게시했습니다.");
-						location.href = "/timeline/timeline-view";
+						location.reload();
+					} else if (data.code == 500) { // 비로그인
+						location.href = "/user/sign-in-view";
 					} else {
 						alert(data.error_message);
 					}

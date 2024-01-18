@@ -24,18 +24,27 @@ public class PostRestController {
 	@PostMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam(value = "content", required = false) String content,
-			@RequestParam("imagePath") MultipartFile imagePath, 
+			@RequestParam("file") MultipartFile file, 
 			HttpSession session ) {
 		
-		int userId = (int)session.getAttribute("userId");
+		Integer userId = (Integer) session.getAttribute("userId");
 		String userLoginId = (String) session.getAttribute("userLoginId");
 		
-		// db insert
-		postBO.addPost(userId, content, userLoginId);
-		
-		
 		Map<String, Object> result = new HashMap<>();
+		if (userId == null) {
+			result.put("code", 500); // 비로그인 상태
+			result.put("error_message", "로그인을 해주세요.");
+			return result;
+		}
+
+		// DB insert
+		postBO.addPost(userId, userLoginId, content, file);
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		
 		return result;
+		
 	}
 	
 }
