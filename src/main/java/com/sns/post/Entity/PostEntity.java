@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name="post")
 public class PostEntity {

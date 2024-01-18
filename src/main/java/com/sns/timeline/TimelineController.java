@@ -26,9 +26,9 @@ public class TimelineController {
 		
 		// 로그인 여부 확인
 		Integer userId = (Integer) session.getAttribute("userId");
-//		if (userId == null) {
-//			return "redirect:/timeline/timeline-view";
-//		}
+		if (userId == null) {
+			return "redirect:/timeline/timeline-view";
+		}
 		
 		// DB 목록 조회
 		List<PostEntity> postList = postBO.getPostList();
@@ -37,5 +37,8 @@ public class TimelineController {
 		model.addAttribute("viewlist", "timeline/timeline");
 		return "template/layout";
 	}
+	
+	// 댓글
+	// <게시> 버튼에 글 번호를 심어두고 댓글 내용 => js 함수 <- 근처
 	
 }

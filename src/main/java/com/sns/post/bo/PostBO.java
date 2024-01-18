@@ -18,4 +18,17 @@ public class PostBO {
 		return postRepository.findAllByOrderByIdDesc();
 	}
 	
+	// input: userId, content(null), imagePath
+	// output: void
+	public void addPost(int userId, String content, String imagePath) {
+		PostEntity post = PostEntity.builder()
+				.userId(userId)
+				.content(content)
+				.imagePath(imagePath)
+				.build();
+	}
+		
+		
+	
+	
 }
