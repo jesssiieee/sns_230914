@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.sns.comment.bo.CommentBO;
+import com.sns.comment.domain.Comment;
 import com.sns.post.Entity.PostEntity;
 import com.sns.post.bo.PostBO;
 
@@ -17,8 +19,15 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/timeline")
 public class TimelineController {
 
+	// TimelineController -> TimelineBO 	-> PostBO
+	//                       (화면용 객체) 	-> CommentBO
+	//                                  	-> UserBo
+	
 	@Autowired
 	private PostBO postBO;
+	
+	@Autowired
+	private CommentBO commentBO;
 	
 	// url : http://localhost:8080/timeline/timeline-view
 	@GetMapping("/timeline-view")
@@ -31,14 +40,14 @@ public class TimelineController {
 		}
 		
 		// DB 목록 조회
-		List<PostEntity> postList = postBO.getPostList();
+		// List<PostEntity> postList = postBO.getPostList();
+		// List<Comment> commentList = commentBO.getComment();
 		
-		model.addAttribute("postList", postList);
+		// model.addAttribute("postList", postList);
+		// model.addAttribute("commentList", commentList);
 		model.addAttribute("viewlist", "timeline/timeline");
 		return "template/layout";
 	}
 	
-	// 댓글
-	// <게시> 버튼에 글 번호를 심어두고 댓글 내용 => js 함수 <- 근처
 	
 }

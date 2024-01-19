@@ -67,20 +67,23 @@
 				<%-- 댓글 목록 --%>
 				<div class="card-comment-list m-2">
 					<%-- 댓글 내용들 --%>
-					<div class="card-comment m-1">
-						<span class="font-weight-bold">댓글쓰니</span>
-						<span>댓글 내용1111</span>
-						
-						<%-- 댓글 삭제 버튼 --%>
-						<a href="#" class="comment-del-btn">
-							<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
-						</a>
-					</div>
+					<c:forEach items="${commentList }" var="comment">
+					<c:if test="${comment.postId eq post.id}">
+						<div class="card-comment m-1">
+							<span class="font-weight-bold">${comment.userId }</span>
+							<span>${comment.content }</span>
+							<%-- 댓글 삭제 버튼 --%>
+							<a href="#" class="comment-del-btn">
+								<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+							</a>
+						</div>
+					</c:if>
+					</c:forEach>
 					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" id="commentBtn" class="comment-btn btn btn-light">게시</button>
+						<button type="button" class="comment-btn btn btn-light" data-user-id="${userId}" data-post-id="${post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
@@ -190,8 +193,62 @@
 				}
 			});
 			
+			// listReply();
+			$("#commentBtn").on('click', function() {
+				
+			});
 			
 		}); // writeBtn
+		
+		// 전체가 반복문을 돌고 있기 때문에 class로 이벤트를 잡는다.
+		$(".comment-btn").on('click', function() {
+			// alert("댓글 쓰기");
+			let userId = $(this).data("user-id"); // session에 있는 값을 script에서도 가져올 수 있다, 버튼에 담아 가져온다.
+			// alert(userId);
+			if (!userId) {
+				// 비로그인이면 로그인 화면으로 이동
+				alert("로그인이 필요합니다.");
+				location.href = "/user/sign-in-view";
+				return;
+			}
+			
+			let postId = $(this).data("post-id");
+			// alert(postId);
+			
+			// 댓글 내용 가져오기 
+			// 1) 이전 태그 값 가져오기 button 전의 text 태그 지칭
+			let content = $(this).prev().val().trim();
+			alert(content);
+			
+			// 2) 형제 태그 + 지칭 으로 태그 지칭 / 형제 태그 중 input 값 가져오기 
+			// let content = $(this).siblings("input");
+			// alert(content); <-- Object로 뜨는..........ㄷ...
+			
+			// ajax로 댓글 게시하기
+			$.ajax({
+				
+				// request
+				type:"POST"
+				, url:"/comment/create"
+				, data:{"postId":postId, "content":content}
+				
+				// response
+				,success:function(data) {
+					if (data.code==200) {
+						alert("댓글 게시에 성공하였습니다.");
+					} else {
+						alert(data.error_message);
+					}
+				}
+				
+				, error(request, status, error) {
+					alert("댓글 게시에 실패하였습니다.");
+				}
+				
+				
+			}); // comment-btn ajax
+			
+		}); //comment-btn
 		
 	}); // ready
 

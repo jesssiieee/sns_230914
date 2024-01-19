@@ -1,22 +1,14 @@
 package com.sns.post.Entity;
 
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.annotations.UpdateTimestamp;
-
-import com.sns.comment.Entity.CommentEntity;
-import com.sns.user.entity.UserEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,13 +44,5 @@ public class PostEntity {
 	@UpdateTimestamp
 	@Column(name="updatedAt")
 	private Date updatedAt;
-	
-	@ManyToOne
-	@JoinColumn(name="userId")
-	private UserEntity user;
-	
-	@OneToMany(mappedBy = "PostEntity")
-	@OrderBy("id_asc")
-	private List<CommentEntity> comments;
 	
 }

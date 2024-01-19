@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +26,8 @@ public class PostRestController {
 	public Map<String, Object> create(
 			@RequestParam(value = "content", required = false) String content,
 			@RequestParam("file") MultipartFile file, 
-			HttpSession session ) {
+			HttpSession session
+			) {
 		
 		Integer userId = (Integer) session.getAttribute("userId");
 		String userLoginId = (String) session.getAttribute("userLoginId");
@@ -39,6 +41,8 @@ public class PostRestController {
 
 		// DB insert
 		postBO.addPost(userId, userLoginId, content, file);
+		
+		// comment select
 		
 		result.put("code", 200);
 		result.put("result", "성공");

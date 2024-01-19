@@ -41,7 +41,7 @@ public class PostBO {
 				);
 		
 	}
-
 	
+	// input: postId, output: List
 	
 }
