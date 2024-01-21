@@ -19,35 +19,34 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/timeline")
 public class TimelineController {
 
-	// TimelineController -> TimelineBO 	-> PostBO
-	//                       (화면용 객체) 	-> CommentBO
-	//                                  	-> UserBo
-	
+	// TimelineController -> TimelineBO -> PostBO
+	// (화면용 객체) -> CommentBO
+	// -> UserBo
+
 	@Autowired
 	private PostBO postBO;
-	
+
 	@Autowired
 	private CommentBO commentBO;
-	
+
 	// url : http://localhost:8080/timeline/timeline-view
 	@GetMapping("/timeline-view")
 	public String timeLineView(Model model, HttpSession session) {
-		
+
 		// 로그인 여부 확인
 		Integer userId = (Integer) session.getAttribute("userId");
 		if (userId == null) {
 			return "redirect:/timeline/timeline-view";
 		}
-		
+
 		// DB 목록 조회
-		// List<PostEntity> postList = postBO.getPostList();
-		// List<Comment> commentList = commentBO.getComment();
-		
-		// model.addAttribute("postList", postList);
-		// model.addAttribute("commentList", commentList);
+		List<PostEntity> postList = postBO.getPostList();
+		List<Comment> commentList = commentBO.getComment();
+
+		model.addAttribute("postList", postList);
+		model.addAttribute("commentList", commentList);
 		model.addAttribute("viewlist", "timeline/timeline");
 		return "template/layout";
 	}
-	
-	
+
 }

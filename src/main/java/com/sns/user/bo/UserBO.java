@@ -1,8 +1,11 @@
 package com.sns.user.bo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sns.post.Entity.PostEntity;
 import com.sns.user.entity.UserEntity;
 import com.sns.user.repository.UserRepository;
 
@@ -11,6 +14,14 @@ public class UserBO {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+//	public List<PostEntity> getPostList() {
+//		return postRepository.findAllByOrderByIdDesc();
+//	}
+	
+	public List<UserEntity> getUserList() {
+		return userRepository.findAll();
+	}
 	
 	// 로그인 id 중복확인을 위한 db 확인
 	// input: loginId	output: userEntity
@@ -34,7 +45,6 @@ public class UserBO {
 		
 	}
 	
-	// 
 	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
 		return userRepository.findByLoginIdAndPassword(loginId, password);
 	}

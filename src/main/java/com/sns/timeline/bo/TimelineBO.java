@@ -9,12 +9,17 @@ import org.springframework.stereotype.Service;
 import com.sns.post.Entity.PostEntity;
 import com.sns.post.bo.PostBO;
 import com.sns.timeline.domain.CardView;
+import com.sns.user.bo.UserBO;
+import com.sns.user.entity.UserEntity;
 
 @Service
 public class TimelineBO {
 	
 	@Autowired
 	private PostBO postBO;
+	
+	@Autowired
+	private UserBO userBO;
 
 	//input: X		output: List<CardView>
 	public List<CardView> generateCardViewList() {
@@ -23,18 +28,41 @@ public class TimelineBO {
 		
 		// 글 목록 가져오기 List<PostEntity>
 		List<PostEntity> postList = postBO.getPostList();
-		PostEntity post = null;
 		
-		// 글 목록에 대한 반복문 순회
-		// post => cardView		=> cardViewList에 넣기
-		for(int i = 0; i < postList.size(); i++) {
-			post = postList.get(i);
-//			cardViewList.add(post);
+		// 사용자 목록 가져오기 
+		List<UserEntity> userList = userBO.getUserList();
+		
+		for(PostEntity post : postList) {
+			CardView cardView = convertPostToCardView(post);
+			
+			cardViewList.add(cardView);
 		}
 		
-		
+		for (UserEntity user : userList) {
+			CardView cardView = convertUserToCardView(user);
+			
+			cardViewList.add(cardView);
+		}
 		
 		return cardViewList;
+		
+	}
+	
+	private CardView convertPostToCardView(PostEntity post) {
+		
+		CardView cardView = new CardView();
+		
+		cardView.setPost(post);
+		
+		return cardView;
+	}
+	
+	private CardView convertUserToCardView(UserEntity user) {
+		CardView cardView = new CardView();
+		
+		cardView.setUser(user);
+		
+		return cardView;
 	}
 	
 }
