@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.sns.comment.domain.Comment;
+import com.sns.comment.domain.CommentView;
 
 @Mapper
 public interface CommentMapper {
@@ -18,4 +19,7 @@ public interface CommentMapper {
 	
 	public List<Comment> selectcomment();
 	
+	public List<Comment> selectCommentListByPostId(int postId);
+	
+	public void deleteComment(int id);
 }

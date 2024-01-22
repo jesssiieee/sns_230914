@@ -1,18 +1,17 @@
 package com.sns.comment;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sns.comment.bo.CommentBO;
-import com.sns.comment.domain.Comment;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -43,11 +42,23 @@ public class CommentRestController {
 		commentBO.addComment(postId, userId, content);
 		
 		result.put("code", 200);
-		result.put("result", "성공");
+		
 		return result;
 		
 	}
 	
-	
+	@DeleteMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("id") int id ) {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		// 댓글 삭제
+		commentBO.deleteComment(id);
+		
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+	}
 	
 }

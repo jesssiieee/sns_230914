@@ -6,33 +6,33 @@
 
 		<%-- 글쓰기 영역(로그인 된 사람만 보이게) --%>
 		<c:if test="${not empty userId}">
-		<div class="write-box border rounded m-3">
-			<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
-			
-			<div class="d-flex justify-content-between">
-				<div class="file-upload d-flex">
-					<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것과 같은 효과 --%>
-					<input type="file" id="file" accept=".jpg, .jpeg, .gif, .png" class="d-none">
+			<div class="write-box border rounded m-3">
+				<textarea id="writeTextArea" placeholder="내용을 입력해주세요" class="w-100 border-0"></textarea>
 				
-					<%-- 이미지에 마우스를 올리면 마우스 커서가 변하도록 적용 --%>
-					<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+				<div class="d-flex justify-content-between">
+					<div class="file-upload d-flex">
+						<%-- file 태그를 숨겨두고 이미지를 클릭하면 file 태그를 클릭한 것과 같은 효과 --%>
+						<input type="file" id="file" accept=".jpg, .jpeg, .gif, .png" class="d-none">
 					
-					<%-- 업로드 된 임시 이미지 파일 이름 나타내는 곳 --%>
-					<div id="fileName" class="ml-2"></div>
+						<%-- 이미지에 마우스를 올리면 마우스 커서가 변하도록 적용 --%>
+						<a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
+						
+						<%-- 업로드 된 임시 이미지 파일 이름 나타내는 곳 --%>
+						<div id="fileName" class="ml-2"></div>
+					</div>
+					<button id="writeBtn" class="btn btn-info">게시</button>
 				</div>
-				<button id="writeBtn" class="btn btn-info">게시</button>
-			</div>
-		</div> <%--// 글쓰기 영역 끝 --%>
+			</div> <%--// 글쓰기 영역 끝 --%>
 		</c:if>
 		
 		<%-- 타임라인 영역 --%>
 		<div class="timeline-box my-5">
-			<c:forEach items="${postList}" var="post">
+			<c:forEach items="${cardViewList}" var="card">
 			<%-- 카드1 --%>
 			<div class="card border rounded mt-3">
 				<%-- 글쓴이, 더보기(삭제) --%>
 				<div class="p-2 d-flex justify-content-between">
-					<span class="font-weight-bold">${post.userId}</span>
+					<span class="font-weight-bold">${card.user.loginId}</span> <%-- CardView의 user객체 안의 UserEntity의 loginId를 선택 가능 --%>
 					
 					<a href="#" class="more-btn">
 						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -41,7 +41,7 @@
 				
 				<%-- 카드 이미지 --%>
 				<div class="card-img">
-					<img src="${post.imagePath}" class="w-100" alt="본문 이미지">
+					<img src="${card.post.imagePath}" class="w-100" alt="본문 이미지">
 				</div>
 				
 				<%-- 좋아요 --%>
@@ -55,7 +55,7 @@
 				
 				<%-- 글 --%>
 				<div class="card-post m-3">
-					<span class="font-weight-bold">${post.userId}</span>
+					<span class="font-weight-bold">${card.user.loginId}</span>
 					<span>${post.content}</span>
 				</div>
 				
@@ -67,23 +67,25 @@
 				<%-- 댓글 목록 --%>
 				<div class="card-comment-list m-2">
 					<%-- 댓글 내용들 --%>
-					<c:forEach items="${commentList }" var="comment">
-					<c:if test="${comment.postId eq post.id}">
+					<c:forEach items="${card.commentList }" var="commentView"> <%-- CardView안의 commentList 사용 --%>
+					<%-- <c:if test="${comment.postId eq post.id}"> --%>
 						<div class="card-comment m-1">
-							<span class="font-weight-bold">${comment.userId }</span>
-							<span>${comment.content }</span>
+							<span class="font-weight-bold">${commentView.user.loginId }</span>
+							<span >${commentView.comment.content }</span>
 							<%-- 댓글 삭제 버튼 --%>
-							<a href="#" class="comment-del-btn">
-								<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
-							</a>
+							<%-- <c:if test="${not eq userId}"> --%> <!-- x 이미지 로그인아이디일때만 노출 -->
+								<a href="#" class="comment-del-btn" data-user-id="${commentView.comment.id}" >
+									<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
+								</a>
+							<%-- </c:if> --%>
 						</div>
-					</c:if>
-					</c:forEach>
+					<%-- /c:if> --%>
+					</c:forEach> 
 					
 					<%-- 댓글 쓰기 --%>
 					<div class="comment-write d-flex border-top mt-2">
 						<input type="text" class="form-control border-0 mr-2 comment-input" placeholder="댓글 달기"/> 
-						<button type="button" class="comment-btn btn btn-light" data-user-id="${userId}" data-post-id="${post.id}">게시</button>
+						<button type="button" class="comment-btn btn btn-light" data-user-id="${card.user.loginId}" data-post-id="${card.post.id}">게시</button>
 					</div>
 				</div> <%--// 댓글 목록 끝 --%>
 			</div> <%--// 카드1 끝 --%>
@@ -193,10 +195,7 @@
 				}
 			});
 			
-			// listReply();
-			$("#commentBtn").on('click', function() {
-				
-			});
+
 			
 		}); // writeBtn
 		
@@ -217,12 +216,12 @@
 			
 			// 댓글 내용 가져오기 
 			// 1) 이전 태그 값 가져오기 button 전의 text 태그 지칭
-			let content = $(this).prev().val().trim();
-			alert(content);
+			// let content = $(this).prev().val().trim();
+			// alert(content);
 			
 			// 2) 형제 태그 + 지칭 으로 태그 지칭 / 형제 태그 중 input 값 가져오기 
-			// let content = $(this).siblings("input");
-			// alert(content); <-- Object로 뜨는..........ㄷ...
+			let content = $(this).siblings("input").val().trim();
+			alert(content); 
 			
 			// ajax로 댓글 게시하기
 			$.ajax({
@@ -249,6 +248,35 @@
 			}); // comment-btn ajax
 			
 		}); //comment-btn
+		
+		$(".comment-del-btn").on('click', function() {
+			// alert("댓글삭제");
+			
+			let commentId = $(this).data("user-id");
+			alert(commentId);
+			
+			$.ajax ({
+				
+				// request
+				type:"DELETE"				
+				, url:"/comment/delete"
+				, data:{"commentId":commentId}
+				// response
+				, success:function(data) {
+					if (data.code==200) {
+						location.reload(true);
+						alert("댓글 삭제에 성공하였습니다.");
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error(request, status, error) {
+					alert("댓글 삭제에 실패하였습니다.");
+				}
+			}); // comment-del-btn ajax
+
+			
+		}); // comment-del-btn
 		
 	}); // ready
 
