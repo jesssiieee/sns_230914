@@ -49,12 +49,21 @@ public class CommentRestController {
 	
 	@DeleteMapping("/delete")
 	public Map<String, Object> delete(
-			@RequestParam("id") int id ) {
+			@RequestParam("commentId") int commentId,
+			HttpSession session ) {
 		
 		Map<String, Object> result = new HashMap<>();
 		
+		// 로그인 여부 확인
+		Integer userId = (Integer)session.getAttribute("userId");
+		if (userId == null) {
+			result.put("code", 500);
+			result.put("error_message", "로그인 되지 않은 사용자 입니다.");
+			return result;
+		}
+		
 		// 댓글 삭제
-		commentBO.deleteComment(id);
+		commentBO.deleteCommentById(commentId);
 		
 		result.put("code", 200);
 		result.put("result", "성공");

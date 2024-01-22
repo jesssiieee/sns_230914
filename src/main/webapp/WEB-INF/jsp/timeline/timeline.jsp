@@ -74,7 +74,7 @@
 							<span >${commentView.comment.content }</span>
 							<%-- 댓글 삭제 버튼 --%>
 							<%-- <c:if test="${not eq userId}"> --%> <!-- x 이미지 로그인아이디일때만 노출 -->
-								<a href="#" class="comment-del-btn" data-user-id="${commentView.comment.id}" >
+								<a href="#" class="comment-del-btn" data-comment-id="${commentView.comment.id}" >
 									<img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
 								</a>
 							<%-- </c:if> --%>
@@ -234,6 +234,7 @@
 				// response
 				,success:function(data) {
 					if (data.code==200) {
+						location.reload(true);
 						alert("댓글 게시에 성공하였습니다.");
 					} else {
 						alert(data.error_message);
@@ -249,14 +250,14 @@
 			
 		}); //comment-btn
 		
-		$(".comment-del-btn").on('click', function() {
+		$(".comment-del-btn").on('click', function(e) {
 			// alert("댓글삭제");
+			e.preventDefault(); // 위로 올라감 방지
 			
-			let commentId = $(this).data("user-id");
+			let commentId = $(this).data("comment-id");
 			alert(commentId);
 			
 			$.ajax ({
-				
 				// request
 				type:"DELETE"				
 				, url:"/comment/delete"
