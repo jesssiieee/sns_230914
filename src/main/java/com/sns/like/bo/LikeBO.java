@@ -28,7 +28,7 @@ public class LikeBO {
 	}
 	
 	public int likeCount(int postId) {
-		return likeMapper.getlikeCount(postId);
+		return likeMapper.selectLikeCountByPostId(postId);
 	}
 	
 	public int getLikeCountByPostIdUserId(int postId, int userId) {

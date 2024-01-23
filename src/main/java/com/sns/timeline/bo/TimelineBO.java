@@ -15,6 +15,8 @@ import com.sns.timeline.domain.CardView;
 import com.sns.user.bo.UserBO;
 import com.sns.user.entity.UserEntity;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class TimelineBO {
 
@@ -57,6 +59,19 @@ public class TimelineBO {
 			cardView.setLikeCount(likeCount);
 			
 			// 로그인된 사람이 좋아요를 눌렀는지 여부, 비로그인도 BO에 들어올 수 있으니 주의
+			HttpSession session = null;
+			Integer userId = (Integer) session.getAttribute("userId");
+			boolean isLoggedIn = userId != null;
+			
+			if (isLoggedIn) {
+				 // 로그인된 사용자의 ID를 가져올 수 있음
+			    Integer loginId = userId;
+
+			    // 로그인된 사람이 좋아요를 눌렀는지 여부
+//			    boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), loginId);
+//			    cardView.setFilledLike(filledLike);
+			}
+			
 //			boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), ?);
 //			cardView.setFilledLike(filledLike);
 			
