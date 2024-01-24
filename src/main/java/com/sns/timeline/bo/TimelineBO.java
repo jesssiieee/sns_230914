@@ -15,8 +15,6 @@ import com.sns.timeline.domain.CardView;
 import com.sns.user.bo.UserBO;
 import com.sns.user.entity.UserEntity;
 
-import jakarta.servlet.http.HttpSession;
-
 @Service
 public class TimelineBO {
 
@@ -32,8 +30,8 @@ public class TimelineBO {
 	@Autowired
 	private LikeBO likeBO;
 
-	// input: X output: List<CardView>
-	public List<CardView> generateCardViewList() {
+	// input: (비로그인: null, 로그인: userId) output: List<CardView>
+	public List<CardView> generateCardViewList(Integer userId) {
 
 		List<CardView> cardViewList = new ArrayList<>(); // 글 + 글쓴이 + 댓글목록
 
@@ -59,21 +57,11 @@ public class TimelineBO {
 			cardView.setLikeCount(likeCount);
 			
 			// 로그인된 사람이 좋아요를 눌렀는지 여부, 비로그인도 BO에 들어올 수 있으니 주의
-			HttpSession session = null;
-			Integer userId = (Integer) session.getAttribute("userId");
-			boolean isLoggedIn = userId != null;
+			// Controller session에서 로그인된 아이디를 가져온다, null 오류가 나지 않도록 Integer 
 			
-			if (isLoggedIn) {
-				 // 로그인된 사용자의 ID를 가져올 수 있음
-			    Integer loginId = userId;
-
-			    // 로그인된 사람이 좋아요를 눌렀는지 여부
-//			    boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), loginId);
-//			    cardView.setFilledLike(filledLike);
-			}
+			boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), userId);
+			cardView.setFilledLike(filledLike);
 			
-//			boolean filledLike = likeBO.getLikeCountByPostIdUserId(post.getId(), ?);
-//			cardView.setFilledLike(filledLike);
 			
 			// ★★★★ cardView를 list에 넣는다.
 			cardViewList.add(cardView);

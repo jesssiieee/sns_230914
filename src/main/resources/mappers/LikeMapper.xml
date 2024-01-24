@@ -13,10 +13,10 @@
 			
 	</select>
 
-	<select id="selectLikeCountByPostIdUserId" resultType="int" parameterType="map">
+<!-- 	<select id="selectLikeCountByPostIdUserId" resultType="int" parameterType="map">
 		
 		SELECT 
-			COUNT(*)
+			COUNT(1)
 		FROM
 			`like`
 		WHERE
@@ -25,7 +25,23 @@
 			`userId` = #{userId}
 		
 		
-	</select>  
+	</select>  --> 
+	
+	<!-- @Param 어노테이션을 사용 == parameterType = map -->
+	<!--  Count 쿼리 하나로 합치기 -->
+	<select id="selectLikeCountByPostIdOrUserId" parameterType="map" resultType="int">
+	
+		SELECT 
+			COUNT(1)
+		FROM
+			`like`
+		WHERE
+			`postId` = #{postId}
+		<if test="userId != null">
+		AND
+			`userId` = #{userId}
+		</if>
+	</select>
 	
 	
 	<insert id="addLikeByPostIdUserId" parameterType="map">
@@ -57,7 +73,7 @@
 		
 	</delete>
 	
-	<select id="selectLikeCountByPostId" resultType="int">
+<!-- 	<select id="selectLikeCountByPostId" resultType="int">
 	
 		SELECT 
 			COUNT(*)
@@ -66,8 +82,7 @@
 		WHERE
 			`postId` = #{postId}
 	
-	</select>
+	</select> -->
 	
-
 	
  </mapper>

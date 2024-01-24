@@ -1,5 +1,6 @@
 package com.sns.user.entity;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
@@ -21,29 +22,29 @@ import lombok.ToString;
 @NoArgsConstructor
 @Getter
 @Builder
-@Table(name="user")
+@Table(name = "user")
 @Entity
 public class UserEntity {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(name="loginId")
+
+	@Column(name = "loginId")
 	private String loginId;
-	
+
 	private String password;
-	
+
 	private String name;
-	
+
 	private String email;
-	
+
 	@UpdateTimestamp
-	@Column(name="createdAt", updatable = false)
+	@Column(name = "createdAt", updatable = false)
 	private ZonedDateTime createdAt;
-	
+
 	@UpdateTimestamp
-	@Column(name="updatedAt")
+	@Column(name = "updatedAt")
 	private ZonedDateTime updatedAt;
-	
+
 }
