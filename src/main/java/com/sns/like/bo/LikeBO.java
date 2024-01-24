@@ -42,7 +42,6 @@ public class LikeBO {
 		if (userId == null) {
 			return false;
 		}
-		
 		// 로그인	 -  Count값이 0보다 크면(==1이면) 채운 하트, 그렇지 않으면 false
 		return likeMapper.selectLikeCountByPostIdOrUserId(postid, userId) > 0; // <- true
 		
