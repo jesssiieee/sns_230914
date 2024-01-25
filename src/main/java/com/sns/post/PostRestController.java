@@ -57,9 +57,14 @@ public class PostRestController {
 			@RequestParam("postId") int postId, 
 			HttpSession session ) {
 		
-		Integer userId = (Integer) session.getAttribute("userId");
-		
 		Map<String, Object> result = new HashMap<>();
+		
+		Integer userId = (Integer) session.getAttribute("userId");
+		if (userId == null) {
+			result.put("code", 300);
+			result.put("error_message", "로그인을 다시 해주세요.");
+			return result;
+		}
 		
 		postBO.deletePostByPostId(postId);
 		
