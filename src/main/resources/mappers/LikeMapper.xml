@@ -73,16 +73,15 @@
 		
 	</delete>
 	
-<!-- 	<select id="selectLikeCountByPostId" resultType="int">
-	
-		SELECT 
-			COUNT(*)
+	<delete id="deleteLikeByPostId">
+		
+		DELETE 
 		FROM
 			`like`
 		WHERE
 			`postId` = #{postId}
-	
-	</select> -->
+		
+	</delete>
 	
 	
  </mapper>

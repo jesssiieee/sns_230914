@@ -34,9 +34,12 @@
 				<div class="p-2 d-flex justify-content-between">
 					<span class="font-weight-bold">${card.user.loginId}</span> <%-- CardView의 user객체 안의 UserEntity의 loginId를 선택 가능 --%>
 					
-					<a href="#" class="more-btn">
-						<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
-					</a>
+					<!-- (더보기 ... 버튼)로그인된 사람과 글쓴이 정보가 일치할 때 노출 -->
+					<c:if test="${userId eq card.post.userId }">
+						<a href="#" class="more-btn" data-toggle="modal" data-target="#modal" data-post-id="${card.post.id }">
+							<img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
+						</a>
+					</c:if>
 				</div>	
 				
 				<%-- 카드 이미지 --%>
@@ -101,6 +104,33 @@
 			</c:forEach>
 		</div> <%--// 타임라인 영역 끝  --%>
 	</div> <%--// contents-box 끝  --%>
+</div>
+
+<!-- layout의 bootstrap ver에 맞는 modal , 버튼과 실행된 화면이 연동된 테그를 더보기(...)에 끼워넣어 맞춰주기 -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+  Launch demo modal
+</button> -->
+
+<!-- Modal -->
+<!-- modal-header, body, footer 불필요 -> 삭제 -->
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<!-- bootstrap 공식 페이지에서 optional sizes 옵션에서 modal-sm으로 추가, => 사이즈 변경 / modal-dialog-centered => 수직기준 가운데 정렬 -->
+	<%--
+		modal-sm: 작은 모달창 
+		modal-dialog-centered: 수직 기준 가운데 위치
+	 --%>
+ 	<div class="modal-dialog modal-sm modal-dialog-centered">
+	    <div class="modal-content text-center">
+	    	<div class="py-3 border-bottom "> <!-- 앵커테그 크기 조절을 위한 앵커테그의 부모 div -->
+				<a href="#" id="postDelete" >삭제하기</a>
+			</div>	
+	    	<div class="py-3"> <!-- 앵커테그 크기 조절을 위한 앵커테그의 부모 div -->
+	    		<!-- data-dismiss="" <-눌렀을 때, 창이 닫힘 -->
+				<a href="#" data-dismiss="modal" >취소하기</a>
+			</div>	
+	    </div>
+	</div>
 </div>
 
 <script>
@@ -319,6 +349,51 @@
 			}); // like-btn ajax
 			
 		}); // like-btn
+		
+		// 더보기(...) 클릭 => 모달 띄우기
+		$(".more-btn").on('click', function(e) {
+			e.preventDefault(); // a 태그 올라가는 현상 방지
+			
+			// more-btn의 data-post-id
+			let postId = $(this).data("post-id"); // getting
+			// alert(postId);
+			
+			// modal에는 card가 돌고 있지않으므로, more-btn에서 동적으로 modal에게 ${1} 처럼 번호를 넘겨줘야한다.
+			
+			// 1개로 존재하는 modal의 재활용으로 위해 data-post-id를 심는다.
+			$("#modal").data("post-id", postId); // setting
+			
+		}); // more-btn
+		
+		// 셀렉터 확장(어디있는지 모를때)
+		// modal안에 있는, 삭제하기 클릭
+		$("#modal #postDelete").on('click', function(e){
+			e.preventDefault(); // a 태그 위로 올라가는 현상 방지
+			
+			let postId = $("#modal").data("post-id");
+			// alert(postId);
+			
+			$.ajax({
+				
+				type:"DELETE"
+				, data:{"postId":postId}
+				, url:"/post/delete"
+				
+				, success:function(data){
+					if (data.code == 200) {
+						alert("글이 삭제되었습니다.");
+						location.reload(true);
+					} else {
+						alert(data.error_message);
+					}
+				}
+				, error:function(data) {
+					alert("글 삭제에 실패하였습니다.");
+				}
+				
+			}); // postDelete ajax
+			
+		}); // postDelete
 		
 	}); // ready
 

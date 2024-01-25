@@ -46,5 +46,6 @@ public class LikeBO {
 		return likeMapper.selectLikeCountByPostIdOrUserId(postid, userId) > 0; // <- true
 		
 	}
+	
 
 }
