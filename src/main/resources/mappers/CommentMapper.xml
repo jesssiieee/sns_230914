@@ -65,7 +65,7 @@
  		
  	</delete>
  	
- 	<delete id="deleteCommentByPostId">
+ 	<delete id="deleteCommentByPostId" parameterType="int">
  	
  		DELETE 
  		FROM

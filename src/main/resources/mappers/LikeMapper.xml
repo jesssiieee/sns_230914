@@ -61,7 +61,7 @@
 		
 	</insert>
 	
-	<delete id="deleteLikeByPostIdUserId" parameterType="int" >
+	<delete id="deleteLikeByPostIdUserId" parameterType="map" >
 		
 		DELETE 
 		FROM
@@ -73,7 +73,7 @@
 		
 	</delete>
 	
-	<delete id="deleteLikeByPostId">
+	<delete id="deleteLikeByPostId" parameterType="int">
 		
 		DELETE 
 		FROM
